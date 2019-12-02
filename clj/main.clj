@@ -3,8 +3,8 @@
 
 (defn load_data
 	"Loads data from path, split by newline"
-	[path]
-	(str/split (slurp path) #"\n"))
+	[path, splitter]
+	(str/split (slurp path) splitter))
 
 (defn fuel
 	"Calculates the fuel consumption for weight"
@@ -26,12 +26,31 @@
 	(+ tot (fuel_total (Integer/parseInt weight)))) 
 
 (defn one_a [path]
-	(reduce step_a 0 (load_data path)))
+	(reduce step_a 0 (load_data path #"\n")))
 
 (defn one_b [path]
-	(reduce step_b 0 (load_data path)))
+	(reduce step_b 0 (load_data path #"\n")))
+
+; Day 2
+
+(defn init_data
+  "Initializes state and sets noun and verb"
+  [noun, verb]
+  (assoc
+    (assoc (load_data "../02/input" #",") 1 (str noun))
+    2 (str verb)))
+
+(defn calculate [program, index]
+  program
+  ; (take 4 program)
+  )
+
+(defn two_a []
+  (calculate (init_data 12 2) 0)
+)
 
 (defn -main [& args]
-  (println (one_a "../01/input")) ; answer should be 3212842
-  (println (one_b "../01/input")) ; answer should be 4816402
+  ; (println (one_a "../01/input")) ; answer should be 3212842
+  ; (println (one_b "../01/input")) ; answer should be 4816402
+  (println (two_a)) ; answer should be 4816402
 )
