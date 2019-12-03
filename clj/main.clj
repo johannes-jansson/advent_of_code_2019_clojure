@@ -5,6 +5,7 @@
 	"Loads data from path, split by newline"
 	[path, splitter]
 	(str/split (slurp path) splitter))
+	; (str/split (clojure.string/trim-newline (slurp path)) splitter))
 
 (defn fuel
 	"Calculates the fuel consumption for weight"
@@ -41,8 +42,27 @@
     2 (str verb)))
 
 (defn calculate [program, index]
-  program
-  ; (take 4 program)
+  (if (= 99 (get program index))
+    (get program 0)
+    (if (= 1 (get program index))
+      (calculate (assoc program
+                        (get program (+ index 3))
+                        (+
+                         (get program (+ index 1))
+                         (get program (+ index 2))
+                         ))
+                 (+ index 4))
+      (if (= 2 (get program index))
+        (calculate (assoc program
+                          (get program (+ index 3))
+                          (*
+                           (get program (+ index 1))
+                           (get program (+ index 2))
+                           ))
+                   (+ index 4))
+        )
+      )
+    )
   )
 
 (defn two_a []
@@ -52,5 +72,6 @@
 (defn -main [& args]
   ; (println (one_a "../01/input")) ; answer should be 3212842
   ; (println (one_b "../01/input")) ; answer should be 4816402
+  (println (init_data 12 2))
   (println (two_a)) ; answer should be 4816402
 )
